@@ -6,7 +6,7 @@ class Grid extends React.Component {
         return (
            <div>
                <h1>
-                   hi
+                
                </h1>
            </div>
         );

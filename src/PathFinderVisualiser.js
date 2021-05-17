@@ -9,7 +9,7 @@ class PathFinderVisualiser extends React.Component {
             <div>
              <NavBar> </NavBar>
              <Grid> </Grid>
-             </div>
+            </div>
         );
     }
 }
