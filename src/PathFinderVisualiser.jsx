@@ -95,9 +95,9 @@ export default class PathFinderVisualiser extends React.Component {
     }
    render() {
        return (
-            <div>
+            <div style={{textAlign:"center"}}>
                 <div>
-                    <button onClick={()=>this.handleClick()}> Visualise </button>
+                    <button onClick={()=>this.handleClick()} style={{marginBottom:"50px"}}> Visualise </button>
                 </div>
                 <div className={styles.grid}>
                      {this.initGrid()}
