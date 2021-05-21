@@ -22,11 +22,11 @@ export default class Node extends Component {
          : isShortestPath ? 'node-shortestPath' : isVisited ? 'node-visited' : '';
         return (
            <div 
-            id={`node-${row}-${col}`}
+            id={`${row}-${col}`}
             className={`node ${_className}`}
             onMouseDown={() => onMouseDown(row, col)}
             onMouseEnter={() => onMouseEnter(row, col)}
-            onMouseUp={() => onMouseUp(row,col)}
+            onMouseUp={() => onMouseUp()}
             ></div>
         );
     };

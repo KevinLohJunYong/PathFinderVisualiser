@@ -15,7 +15,7 @@ export default class PathFinderVisualiser extends React.Component {
         this.setState({keyPressed:true});
         this.makeWall(r,c);
     }
-    handleMouseUp(r,c) {
+    handleMouseUp() {
         this.setState({keyPressed:false});
     }
     handleMouseEnter(r,c) {
@@ -54,21 +54,25 @@ export default class PathFinderVisualiser extends React.Component {
         alert('hi');
     }
     makeWall(r,c) {
-        var _board = this.state.board.slice();
-        var node = document.getElementById(`node-${r}-${c}`);
-        node.isWall = !node.isWall;
-        _board[r][c] = node;
-        this.setState({board:_board});
+       const _board = this.state.board.slice();
+       const node = _board[r][c];
+       const newNode = {
+           ...node,
+           isWall:!node.isWall
+       };
+       _board[r][c] = newNode;
+       this.setState({board:_board});
     }
     initGrid() {
        return (
          this.state.board.map((row,rowIdx)=>{
                                 return (
-                                    row.map((node,nodeIdx)=>{
-                                     const {isWall,isVisited,isShortestPath,isStart,isFinish,prevNode,distance,row,col} = node;
+                                    <div>
+                                    {row.map((node,nodeIdx)=>{
+                                    const {isWall,isVisited,isShortestPath,isStart,isFinish,prevNode,distance,row,col} = node;
                                         return ( 
                                              <Node
-                                                id = {`node-${row}-${col}`}
+                                                id = {`${row}-${col}`}
                                                 isWall = {isWall}
                                                 isVisited = {isVisited}
                                                 isShortestPath = {isShortestPath}
@@ -80,11 +84,11 @@ export default class PathFinderVisualiser extends React.Component {
                                                 col = {col}
                                                 onMouseDown = {(row,col) => this.handleMouseDown(row,col)}
                                                 onMouseEnter = {(row,col) => this.handleMouseEnter(row,col)}
-                                                onMouseUp = {(row,col) => this.handleMouseUp(row,col)}>
+                                                onMouseUp = {() => this.handleMouseUp()}>
                                              </Node>
-                                           
                                         );
-                                    })
+                                    })}
+                                    </div>
                                 );
                             })
        );
