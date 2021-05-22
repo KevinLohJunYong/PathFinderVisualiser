@@ -11,6 +11,7 @@ export default function dijskstraAlgorithm(board) {
           sort(nodes);
           const closestNode = nodes.shift();
           if(closestNode.isVisited) continue;
+          if(closestNode.isWall) continue;
           if(closestNode.distance === Infinity) return [];
           if(closestNode.row === END_ROW && closestNode.col === END_COL) return visitedNodes;
           visitedNodes.push(closestNode);

@@ -96,9 +96,10 @@ export default class PathFinderVisualiser extends React.Component {
     }
     shortestPath(finalNode) {
         const STARTING_COL = 15;
+        const STARTING_ROW = 10;
         const shortestPath = [];
         var currNode = finalNode;
-        while(currNode.col !== STARTING_COL) {
+        while(currNode.col !== STARTING_COL || currNode.row !== STARTING_ROW) {
            const prevNode = currNode.prevNode;
            const node = {
                ...currNode
@@ -142,7 +143,7 @@ export default class PathFinderVisualiser extends React.Component {
        return (
             <div style={{textAlign:"center"}}>
                 <div>
-                    <button onClick={()=>this.visualiseDijskstra()} style={{marginBottom:"50px"}}> Visualise </button>
+                    <button onClick={()=>this.visualiseDijskstra()} style={{marginBottom:"50px"}}> Visualise Dijskstra Algorithm </button>
                 </div>
                 <div className={styles.grid}>
                      {this.setGrid()}
