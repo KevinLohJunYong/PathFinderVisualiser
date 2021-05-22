@@ -3,7 +3,7 @@ export default function dijskstraAlgorithm(board) {
     const STARTING_ROW = 10;
     const STARTING_COL = 15;
     const END_ROW = 10;
-    const END_COL = 35; 
+    const END_COL = 40; 
     const visitedNodes = [];
     const nodes = getAllNodes(board);
     board[STARTING_ROW][STARTING_COL].distance = 0;

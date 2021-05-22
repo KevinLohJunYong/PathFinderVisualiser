@@ -1,8 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Node from './Node/Node.jsx';
+import { withStyles } from "@material-ui/core/styles";
 import styles from './index.css';
-import dijskstra from './Algorithms/dijskstraAlgorithm.js'
+import dijskstra from './Algorithms/dijskstraAlgorithm.js';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
+const WhiteTextTypography = withStyles({
+    root: {
+      color: "#FFFFFF"
+    }
+  })(Typography);
 
 export default class PathFinderVisualiser extends React.Component {
     constructor() {
@@ -24,9 +35,9 @@ export default class PathFinderVisualiser extends React.Component {
     }
     componentDidMount() {
        const grid = [];
-       for(let r=0;r<20;r++) {
+       for(let r=0;r<21;r++) {
            const row = [];
-           for(let c=0;c<50;c++) {
+           for(let c=0;c<56;c++) {
                row.push(this.createNode(r,c));
            }
            grid.push(row);
@@ -37,7 +48,7 @@ export default class PathFinderVisualiser extends React.Component {
         const STARTING_ROW = 10;
         const STARTING_COL = 15;
         const END_ROW = 10;
-        const END_COL = 35; 
+        const END_COL = 40; 
         const node = {
            isWall: false,
            isVisited: false,
@@ -63,10 +74,10 @@ export default class PathFinderVisualiser extends React.Component {
     }
     setGrid() {
        return (
-         this.state.board.map((row,rowIdx)=>{
+         this.state.board.map((row)=>{
                                 return (
                                     <div>
-                                    {row.map((node,nodeIdx)=>{
+                                    {row.map((node)=>{
                                     const {isWall,isVisited,isShortestPath,isStart,isFinish,prevNode,distance,row,col} = node;
                                         return ( 
                                              <Node
@@ -111,7 +122,7 @@ export default class PathFinderVisualiser extends React.Component {
     }
     visualiseShortestPath() {
         const END_ROW = 10;
-        const END_COL = 35; 
+        const END_COL = 40; 
         const finalNode = this.state.board[END_ROW][END_COL];
         const shortestPath = this.shortestPath(finalNode);
         for(let i=0;i<shortestPath.length;i++) {
@@ -139,11 +150,90 @@ export default class PathFinderVisualiser extends React.Component {
          visitedNodes.shift();
          this.animateDijskstra(visitedNodes);
     }      
+    animateVisualiseButton() {
+       document.getElementById("visualiseButton").style.backgroundColor = "orange";
+    }
+    deAnimateVisualiseButton() {
+        document.getElementById("visualiseButton").style.backgroundColor = "inherit";
+     }
+     redirectToGitHub() {
+         const gitHubUrl = "https://github.com/KevinLohJunYong/PathFinderVisualiser";
+         window.open(gitHubUrl,"_blank");
+     }
+     redirectToWebSite() {
+         const webSiteUrl = "https://kevinlohjunyong.netlify.app/";
+         window.open(webSiteUrl,"_blank")
+     }
+     clearBoard() {
+         const emptyBoard = [];
+         this.setState({board:emptyBoard});
+         this.componentDidMount();
+     }
    render() {
        return (
             <div style={{textAlign:"center"}}>
+                <div> 
                 <div>
-                    <button onClick={()=>this.visualiseDijskstra()} style={{marginBottom:"50px"}}> Visualise Dijskstra Algorithm </button>
+      <AppBar position="static" elevation={0}>
+        <Toolbar>
+          <Typography variant="h6" color="inherit">
+              PathFinderVisualiser
+          </Typography>
+          <div class="dropdown">
+            <Button 
+              id="visualiseButton" 
+              size="large"
+              onMouseEnter={()=>this.animateVisualiseButton()} 
+              onMouseLeave={()=>this.deAnimateVisualiseButton()}
+              variant="outlined" 
+              style={{textTransform:"none"}}> 
+               <WhiteTextTypography variant="h6" color="#FFFFFF">
+                  Visualise Algorithms
+               </WhiteTextTypography>
+            </Button>
+            <div class="dropdown-content">
+             <Button style={{backgroundColor:"white",textTransform:"none"}} 
+                     onClick={()=>this.visualiseDijskstra()}
+                     onMouseEnter={()=>this.animateVisualiseButton()}
+                     onMouseLeave={()=>this.deAnimateVisualiseButton()}> Dijskstra's Algorithm </Button>
+             <Button 
+                     style={{backgroundColor:"white",textTransform:"none"}}
+                     onMouseEnter={()=>this.animateVisualiseButton()}
+                     onMouseLeave={()=>this.deAnimateVisualiseButton()}> Breath First Search Algorithm </Button>
+             <Button 
+                    style={{backgroundColor:"white",textTransform:"none"}}
+                    onMouseEnter={()=>this.animateVisualiseButton()}
+                    onMouseLeave={()=>this.deAnimateVisualiseButton()}> Depth First Search Algorithm </Button>
+             <Button 
+                    style={{backgroundColor:"white",textTransform:"none"}}
+                    onMouseEnter={()=>this.animateVisualiseButton()}
+                    onMouseLeave={()=>this.deAnimateVisualiseButton()}> A* Search Algorithm </Button>
+          </div>
+            </div>
+            <div>
+                <Button style={{textTransform:"none"}} onClick={()=>this.redirectToGitHub()}> 
+                  <WhiteTextTypography variant="h6" color="#FFFFFF">
+                     GitHub
+                  </WhiteTextTypography>
+                </Button>
+            </div>
+            <div>
+                <Button style={{textTransform:"none"}} onClick={()=>this.redirectToWebSite()}> 
+                  <WhiteTextTypography variant="h6" color="#FFFFFF">
+                     About
+                  </WhiteTextTypography>
+                </Button>
+            </div>
+            <div>
+                <Button style={{textTransform:"none"}} onClick={()=>this.clearBoard()}> 
+                  <WhiteTextTypography variant="h6" color="#FFFFFF">
+                     Clear Board
+                  </WhiteTextTypography>
+                </Button>
+            </div>
+        </Toolbar>
+      </AppBar>
+          </div>
                 </div>
                 <div className={styles.grid}>
                      {this.setGrid()}

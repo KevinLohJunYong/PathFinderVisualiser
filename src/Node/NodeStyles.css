@@ -1,11 +1,11 @@
 .node {
     display: inline-block;
-    height: 25px;
-    width: 25px;
+    height: 25.42px;
+    width: 25.42px;
     outline: 1px solid rgb(175, 216, 248);
 }
 .node-start {
-    background-color: green;
+    background-color: orange;
 }
 .node-finish {
     background-color: red;
@@ -28,6 +28,7 @@
        background-color: darkblue;
     }
     50% {
+       transform: scale(0.6);
        border-radius: 100%;
        background-color: darkcyan;
     }
