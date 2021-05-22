@@ -95,7 +95,6 @@ export default class PathFinderVisualiser extends React.Component {
         document.getElementById(`${node.row}-${node.col}`).className = 'node node-visited';
     }
     shortestPath(finalNode) {
-        const STARTING_ROW = 10;
         const STARTING_COL = 15;
         const shortestPath = [];
         var currNode = finalNode;
@@ -120,7 +119,7 @@ export default class PathFinderVisualiser extends React.Component {
     }
     markShortestPath(node) {
         const _board = this.state.board.slice();
-        _board[node.row][node.col].isVisited = false;
+        _board[node.row][node.col].isShortestPath = true;
         _board[node.row][node.col].className = 'node node-shortestPath';
         this.setState({board:_board});
     }
@@ -136,6 +135,7 @@ export default class PathFinderVisualiser extends React.Component {
     }
     visualiseDijskstra() {
          const visitedNodes = dijskstra(this.state.board);
+         visitedNodes.shift();
          this.animateDijskstra(visitedNodes);
     }      
    render() {
