@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Node from './Node/Node.jsx';
 import styles from './index.css';
+import dijskstra from './Algorithms/dijskstraAlgorithm.js'
 
 export default class PathFinderVisualiser extends React.Component {
     constructor() {
@@ -50,9 +51,6 @@ export default class PathFinderVisualiser extends React.Component {
         };
         return node;
     }
-    handleClick() {
-        alert('hi');
-    }
     makeWall(r,c) {
        const _board = this.state.board.slice();
        const node = _board[r][c];
@@ -63,7 +61,7 @@ export default class PathFinderVisualiser extends React.Component {
        _board[r][c] = newNode;
        this.setState({board:_board});
     }
-    initGrid() {
+    setGrid() {
        return (
          this.state.board.map((row,rowIdx)=>{
                                 return (
@@ -93,14 +91,61 @@ export default class PathFinderVisualiser extends React.Component {
                             })
        );
     }
+    markVisited(node) {
+        document.getElementById(`${node.row}-${node.col}`).className = 'node node-visited';
+    }
+    shortestPath(finalNode) {
+        const STARTING_ROW = 10;
+        const STARTING_COL = 15;
+        const shortestPath = [];
+        var currNode = finalNode;
+        while(currNode.row !== STARTING_ROW && currNode.col !== STARTING_COL) {
+           const prevNode = currNode.prevNode;
+           const node = {
+               ...currNode
+           };
+           shortestPath.unshift(node);
+           currNode = prevNode;
+        }
+        return shortestPath;
+    }
+    visualiseShortestPath() {
+        const END_ROW = 10;
+        const END_COL = 35; 
+        const finalNode = this.state.board[END_ROW][END_COL];
+        const shortestPath = this.shortestPath(finalNode);
+        for(let i=0;i<shortestPath.length;i++) {
+            setTimeout(()=>this.markShortestPath(shortestPath[i]),50*i);
+        }
+    }
+    markShortestPath(node) {
+        const _board = this.state.board.slice();
+        _board[node.row][node.col].isVisited = false;
+        _board[node.row][node.col].className = 'node node-shortestPath';
+        this.setState({board:_board});
+    }
+    animateDijskstra(visitedNodes) {
+        for(let i=0;i<=visitedNodes.length;i++) {
+           if(i === visitedNodes.length) {
+               setTimeout(()=>this.visualiseShortestPath(),10*i);
+           }
+           else {
+               setTimeout(()=>this.markVisited(visitedNodes[i]),10*i);
+           }
+        }
+    }
+    visualiseDijskstra() {
+         const visitedNodes = dijskstra(this.state.board);
+         this.animateDijskstra(visitedNodes);
+    }      
    render() {
        return (
             <div style={{textAlign:"center"}}>
                 <div>
-                    <button onClick={()=>this.handleClick()} style={{marginBottom:"50px"}}> Visualise </button>
+                    <button onClick={()=>this.visualiseDijskstra()} style={{marginBottom:"50px"}}> Visualise </button>
                 </div>
                 <div className={styles.grid}>
-                     {this.initGrid()}
+                     {this.setGrid()}
                 </div>
             </div>
        );
