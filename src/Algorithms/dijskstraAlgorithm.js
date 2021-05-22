@@ -1,9 +1,11 @@
 //return visited nodes order
-export default function dijskstraAlgorithm(board) {
-    const STARTING_ROW = 10;
-    const STARTING_COL = 15;
-    const END_ROW = 10;
-    const END_COL = 40; 
+const STARTING_ROW = 12;
+const STARTING_COL = 15;
+const END_ROW = 12;
+const END_COL = 40; 
+const ROWS = 25;
+const COLS = 50;
+export default function dijskstraAlgorithm(board) { 
     const visitedNodes = [];
     const nodes = getAllNodes(board);
     board[STARTING_ROW][STARTING_COL].distance = 0;
@@ -21,8 +23,6 @@ export default function dijskstraAlgorithm(board) {
     return [];
 }
 function updateNeighbours(nodes,node,board) {
-    const ROWS = 20;
-    const COLS = 50;
     if(node.row+1 < ROWS) {
         var nxtNode = board[node.row+1][node.col];
         if(!nxtNode.isVisited) {

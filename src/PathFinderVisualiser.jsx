@@ -14,6 +14,10 @@ const WhiteTextTypography = withStyles({
       color: "#FFFFFF"
     }
   })(Typography);
+const STARTING_ROW = 12;
+const STARTING_COL = 15;
+const END_ROW = 12;
+const END_COL = 40; 
 
 export default class PathFinderVisualiser extends React.Component {
     constructor() {
@@ -35,7 +39,7 @@ export default class PathFinderVisualiser extends React.Component {
     }
     componentDidMount() {
        const grid = [];
-       for(let r=0;r<21;r++) {
+       for(let r=0;r<25;r++) {
            const row = [];
            for(let c=0;c<56;c++) {
                row.push(this.createNode(r,c));
@@ -45,10 +49,6 @@ export default class PathFinderVisualiser extends React.Component {
        this.setState({board:grid});
     }
     createNode(r,c) {
-        const STARTING_ROW = 10;
-        const STARTING_COL = 15;
-        const END_ROW = 10;
-        const END_COL = 40; 
         const node = {
            isWall: false,
            isVisited: false,
@@ -106,8 +106,6 @@ export default class PathFinderVisualiser extends React.Component {
         document.getElementById(`${node.row}-${node.col}`).className = 'node node-visited';
     }
     shortestPath(finalNode) {
-        const STARTING_COL = 15;
-        const STARTING_ROW = 10;
         const shortestPath = [];
         var currNode = finalNode;
         while(currNode.col !== STARTING_COL || currNode.row !== STARTING_ROW) {
@@ -117,14 +115,14 @@ export default class PathFinderVisualiser extends React.Component {
            };
            shortestPath.unshift(node);
            currNode = prevNode;
+           if(currNode === null) return [];
         }
         return shortestPath;
     }
     visualiseShortestPath() {
-        const END_ROW = 10;
-        const END_COL = 40; 
         const finalNode = this.state.board[END_ROW][END_COL];
         const shortestPath = this.shortestPath(finalNode);
+        if(shortestPath === null) return;
         for(let i=0;i<shortestPath.length;i++) {
             setTimeout(()=>this.markShortestPath(shortestPath[i]),50*i);
         }
@@ -150,19 +148,15 @@ export default class PathFinderVisualiser extends React.Component {
          visitedNodes.shift();
          this.animateDijskstra(visitedNodes);
     }      
-    animateVisualiseButton() {
-       document.getElementById("visualiseButton").style.backgroundColor = "orange";
+    animateButton(id) {
+       document.getElementById(id).style.backgroundColor = "orange";
     }
-    deAnimateVisualiseButton() {
-        document.getElementById("visualiseButton").style.backgroundColor = "inherit";
+    deAnimateButton(id) {
+        document.getElementById(id).style.backgroundColor = "inherit";
      }
      redirectToGitHub() {
          const gitHubUrl = "https://github.com/KevinLohJunYong/PathFinderVisualiser";
          window.open(gitHubUrl,"_blank");
-     }
-     redirectToWebSite() {
-         const webSiteUrl = "https://kevinlohjunyong.netlify.app/";
-         window.open(webSiteUrl,"_blank")
      }
      clearBoard() {
          const emptyBoard = [];
@@ -174,7 +168,7 @@ export default class PathFinderVisualiser extends React.Component {
             <div style={{textAlign:"center"}}>
                 <div> 
                 <div>
-      <AppBar position="static" elevation={0}>
+      <AppBar position="static" elevation={0} style={{padding:"10px",paddingLeft:"5px"}}>
         <Toolbar>
           <Typography variant="h6" color="inherit">
               PathFinderVisualiser
@@ -183,8 +177,8 @@ export default class PathFinderVisualiser extends React.Component {
             <Button 
               id="visualiseButton" 
               size="large"
-              onMouseEnter={()=>this.animateVisualiseButton()} 
-              onMouseLeave={()=>this.deAnimateVisualiseButton()}
+              onMouseEnter={()=>this.animateButton("visualiseButton")} 
+              onMouseLeave={()=>this.deAnimateButton("visualiseButton")}
               variant="outlined" 
               style={{textTransform:"none"}}> 
                <WhiteTextTypography variant="h6" color="#FFFFFF">
@@ -194,43 +188,61 @@ export default class PathFinderVisualiser extends React.Component {
             <div class="dropdown-content">
              <Button style={{backgroundColor:"white",textTransform:"none"}} 
                      onClick={()=>this.visualiseDijskstra()}
-                     onMouseEnter={()=>this.animateVisualiseButton()}
-                     onMouseLeave={()=>this.deAnimateVisualiseButton()}> Dijskstra's Algorithm </Button>
+                     onMouseEnter={()=>this.animateButton("visualiseButton")}
+                     onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Dijskstra's Algorithm </Button>
              <Button 
                      style={{backgroundColor:"white",textTransform:"none"}}
-                     onMouseEnter={()=>this.animateVisualiseButton()}
-                     onMouseLeave={()=>this.deAnimateVisualiseButton()}> Breath First Search Algorithm </Button>
+                     onMouseEnter={()=>this.animateButton("visualiseButton")}
+                     onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Breath First Search Algorithm </Button>
              <Button 
                     style={{backgroundColor:"white",textTransform:"none"}}
-                    onMouseEnter={()=>this.animateVisualiseButton()}
-                    onMouseLeave={()=>this.deAnimateVisualiseButton()}> Depth First Search Algorithm </Button>
+                    onMouseEnter={()=>this.animateButton("visualiseButton")}
+                    onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Depth First Search Algorithm </Button>
              <Button 
                     style={{backgroundColor:"white",textTransform:"none"}}
-                    onMouseEnter={()=>this.animateVisualiseButton()}
-                    onMouseLeave={()=>this.deAnimateVisualiseButton()}> A* Search Algorithm </Button>
+                    onMouseEnter={()=>this.animateButton("visualiseButton")}
+                    onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> A* Search Algorithm </Button>
           </div>
             </div>
             <div>
-                <Button style={{textTransform:"none"}} onClick={()=>this.redirectToGitHub()}> 
-                  <WhiteTextTypography variant="h6" color="#FFFFFF">
-                     GitHub
-                  </WhiteTextTypography>
-                </Button>
-            </div>
-            <div>
-                <Button style={{textTransform:"none"}} onClick={()=>this.redirectToWebSite()}> 
-                  <WhiteTextTypography variant="h6" color="#FFFFFF">
-                     About
-                  </WhiteTextTypography>
-                </Button>
-            </div>
-            <div>
-                <Button style={{textTransform:"none"}} onClick={()=>this.clearBoard()}> 
-                  <WhiteTextTypography variant="h6" color="#FFFFFF">
+                <Button 
+                    id="clearBoardButton"
+                    size="large"
+                    style={{textTransform:"none"}}
+                    onMouseEnter={()=>this.animateButton("clearBoardButton")} 
+                    onMouseLeave={()=>this.deAnimateButton("clearBoardButton")}
+                    onClick={()=>this.clearBoard()}> 
+                  <WhiteTextTypography variant="h6">
                      Clear Board
                   </WhiteTextTypography>
                 </Button>
             </div>
+                <div>
+                <Button 
+                  id="addWallsButton"
+                  size="large"
+                  style={{textTransform:"none"}} 
+                  onMouseEnter={()=>this.animateButton("addWallsButton")} 
+                  onMouseLeave={()=>this.deAnimateButton("addWallsButton")}
+                  onClick={()=>alert('Click or drag on the board! =))')}> 
+                  <WhiteTextTypography variant="h6">
+                     Add Walls
+                  </WhiteTextTypography>
+                </Button>
+                </div>
+                <div>
+                <Button 
+                   id="GitHubButton"
+                   size="large"
+                   style={{textTransform:"none"}} 
+                   onMouseEnter={()=>this.animateButton("GitHubButton")} 
+                   onMouseLeave={()=>this.deAnimateButton("GitHubButton")}
+                   onClick={()=>this.redirectToGitHub()}> 
+                  <WhiteTextTypography variant="h6">
+                     GitHub
+                  </WhiteTextTypography>
+                </Button>
+                </div>
         </Toolbar>
       </AppBar>
           </div>
