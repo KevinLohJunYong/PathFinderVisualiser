@@ -45,7 +45,7 @@
     animation-play-state: running;
     animation-timing-function: ease-out;
 }
-@keyframes shortestPathAnimation{
+@keyframes shortestPathAnimation {
     0% {
         transform:scale(0.6);
        background-color: yellow;

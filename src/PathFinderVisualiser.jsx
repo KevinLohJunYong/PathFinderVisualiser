@@ -99,7 +99,7 @@ export default class PathFinderVisualiser extends React.Component {
         const STARTING_COL = 15;
         const shortestPath = [];
         var currNode = finalNode;
-        while(currNode.row !== STARTING_ROW && currNode.col !== STARTING_COL) {
+        while(currNode.col !== STARTING_COL) {
            const prevNode = currNode.prevNode;
            const node = {
                ...currNode
