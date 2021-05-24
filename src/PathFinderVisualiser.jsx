@@ -147,6 +147,11 @@ export default class PathFinderVisualiser extends React.Component {
            }
         }
     }
+    visualiseBiDirectionalSearch() {
+        const visitedNodes = dijskstra(this.state.board);
+         visitedNodes.shift();
+         this.animateAlgo(visitedNodes);
+    }
     visualiseDijskstra() {
          const visitedNodes = dijskstra(this.state.board);
          visitedNodes.shift();
@@ -260,6 +265,13 @@ export default class PathFinderVisualiser extends React.Component {
                     onClick={()=>this.visualiseAStar()} 
                     onMouseEnter={()=>this.animateButton("A*SearchAlgoButton")}
                     onMouseLeave={()=>this.deAnimateButton("A*SearchAlgoButton")}> A* Search Algorithm </Button>
+             <Button 
+                    id="biDirectionalSearchAlgoButton"
+                    size="large"
+                    style={{backgroundColor:"white",textTransform:"none"}}
+                    onClick={()=>this.visualiseBiDirectionalSearch()} 
+                    onMouseEnter={()=>this.animateButton("biDirectionalSearchAlgoButton")}
+                    onMouseLeave={()=>this.deAnimateButton("biDirectionalSearchAlgoButton")}> Bidirectional Search Algorithm </Button>
           </div>
             </div>
             <div>
@@ -310,7 +322,7 @@ export default class PathFinderVisualiser extends React.Component {
                    onMouseLeave={()=>this.deAnimateButton("GitHubButton")}
                    onClick={()=>this.redirectToGitHub()}> 
                   <WhiteTextTypography variant="h6">
-                     GitHub
+                     View Source Code
                   </WhiteTextTypography>
                 </Button>
                 </div>
