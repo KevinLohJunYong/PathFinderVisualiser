@@ -157,6 +157,14 @@ export default class PathFinderVisualiser extends React.Component {
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
    }   
+   verifyCleanSlate(board) {
+       for(let r=0;r<ROWS;r++) {
+           for(let c=0;c>COLS;c++) {
+               if(board[r][c].isVisited) alert('visited error');
+               if(board[r][c].isShortestPath) alert('shortest path error');
+           }
+       }
+   }
     animateButton(id) {
        document.getElementById(id).style.backgroundColor = "orange";
     }
@@ -168,27 +176,7 @@ export default class PathFinderVisualiser extends React.Component {
          window.open(gitHubUrl,"_blank");
      }
      clearBoard() {
-        const _board = [];
-        for(let r=0;r<ROWS;r++) {
-            const rows = [];
-            for(let c=0;c<COLS;c++) {
-               const node = this.state.board[r][c];
-               const newNode = {
-                  row: node.row,
-                  col: node.col,
-                  isStart: node.isStart,
-                  isFinish: node.isFinish,
-                  isWall: false,
-                  prevNode: null,
-                  distance: Infinity,
-                  isVisited: false,
-                  isShortestPath: false,
-               };
-               rows.push(newNode);
-            }
-            _board.push(rows);
-        }
-        this.setState({board:_board});
+        this.componentDidMount();
      }
      clearPath() {
          const _board = [];
@@ -212,7 +200,7 @@ export default class PathFinderVisualiser extends React.Component {
              _board.push(rows);
          }
          this.setState({board:_board});
-     }
+        }
      visualiseBFS() {
         const visitedNodes = bfs(this.state.board);
         visitedNodes.shift();
@@ -269,7 +257,7 @@ export default class PathFinderVisualiser extends React.Component {
                     id="A*SearchAlgoButton"
                     size="large"
                     style={{backgroundColor:"white",textTransform:"none"}}
-                    onClick={()=>this.visualiseAStar()}
+                    onClick={()=>this.visualiseAStar()} 
                     onMouseEnter={()=>this.animateButton("A*SearchAlgoButton")}
                     onMouseLeave={()=>this.deAnimateButton("A*SearchAlgoButton")}> A* Search Algorithm </Button>
           </div>

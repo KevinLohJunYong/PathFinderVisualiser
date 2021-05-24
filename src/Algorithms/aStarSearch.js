@@ -3,14 +3,16 @@ const STARTING_COL = 15;
 const END_ROW = 12;
 const END_COL = 40; 
 const ROWS = 25;
-const COLS = 50;
-const visitedNodes = [];
+const COLS = 56;
+var visitedNodes = [];
 const START_G = 0;
 const START_H = 25;
 const START_F = START_G + START_H;
-const gArr = [];
+var gArr = [];
 
 export default function aStartSearch(board) {
+     gArr = [];
+     visitedNodes = [];
      const startNode = {
          row: STARTING_ROW,
          col: STARTING_COL,

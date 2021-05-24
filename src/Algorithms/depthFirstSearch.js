@@ -2,11 +2,15 @@ const END_ROW = 12;
 const END_COL = 40; 
 const ROWS = 25;
 const COLS = 56;
-const visitedNodes = [];
+var visitedNodes = [];
 var found = false;
 
 export default function depthFirstSearch(board,row,col,_prevNode) {
-    if(found) return [];
+    if(_prevNode === null) {
+        found = false;
+        visitedNodes = [];
+    }
+     if(found) return [];
      if(row >= ROWS || col >= COLS || row < 0 || col < 0) return [];
      const node = board[row][col];
      if(node.prevNode === null) node.prevNode = _prevNode;
