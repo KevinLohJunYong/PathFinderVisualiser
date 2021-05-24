@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Node from './Node/Node.jsx';
 import { withStyles } from "@material-ui/core/styles";
 import styles from './index.css';
@@ -44,9 +43,9 @@ export default class PathFinderVisualiser extends React.Component {
     }
     componentDidMount() {
        const grid = [];
-       for(let r=0;r<25;r++) {
+       for(let r=0;r<ROWS;r++) {
            const row = [];
-           for(let c=0;c<56;c++) {
+           for(let c=0;c<COLS;c++) {
                row.push(this.createNode(r,c));
            }
            grid.push(row);
@@ -169,9 +168,27 @@ export default class PathFinderVisualiser extends React.Component {
          window.open(gitHubUrl,"_blank");
      }
      clearBoard() {
-         const emptyBoard = [];
-         this.setState({board:emptyBoard});
-         this.componentDidMount();
+        const _board = [];
+        for(let r=0;r<ROWS;r++) {
+            const rows = [];
+            for(let c=0;c<COLS;c++) {
+               const node = this.state.board[r][c];
+               const newNode = {
+                  row: node.row,
+                  col: node.col,
+                  isStart: node.isStart,
+                  isFinish: node.isFinish,
+                  isWall: false,
+                  prevNode: null,
+                  distance: Infinity,
+                  isVisited: false,
+                  isShortestPath: false,
+               };
+               rows.push(newNode);
+            }
+            _board.push(rows);
+        }
+        this.setState({board:_board});
      }
      clearPath() {
          const _board = [];
@@ -180,7 +197,13 @@ export default class PathFinderVisualiser extends React.Component {
              for(let c=0;c<COLS;c++) {
                 const node = this.state.board[r][c];
                 const newNode = {
-                   ...node,
+                   row: node.row,
+                   col: node.col,
+                   isStart: node.isStart,
+                   isFinish: node.isFinish,
+                   isWall: node.isWall,
+                   prevNode: null,
+                   distance: Infinity,
                    isVisited: false,
                    isShortestPath: false,
                 };
