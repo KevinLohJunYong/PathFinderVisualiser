@@ -18,8 +18,8 @@ export default function depthFirstSearch(board,row,col,_prevNode) {
      node.isVisited = true;
      visitedNodes.push(node);
      depthFirstSearch(board,row+1,col,node);
-     depthFirstSearch(board,row-1,col,node);
      depthFirstSearch(board,row,col+1,node);
+     depthFirstSearch(board,row-1,col,node);
      depthFirstSearch(board,row,col-1,node);
      return visitedNodes;
 }
