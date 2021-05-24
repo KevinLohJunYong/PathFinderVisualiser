@@ -4,6 +4,9 @@ import Node from './Node/Node.jsx';
 import { withStyles } from "@material-ui/core/styles";
 import styles from './index.css';
 import dijskstra from './Algorithms/dijskstraAlgorithm.js';
+import bfs from './Algorithms/breathFirstSearch.js';
+import dfs from './Algorithms/depthFirstSearch.js';
+import aStar from './Algorithms/aStarSearch.js';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,6 +21,8 @@ const STARTING_ROW = 12;
 const STARTING_COL = 15;
 const END_ROW = 12;
 const END_COL = 40; 
+const ROWS = 25;
+const COLS = 56;
 
 export default class PathFinderVisualiser extends React.Component {
     constructor() {
@@ -133,7 +138,7 @@ export default class PathFinderVisualiser extends React.Component {
         _board[node.row][node.col].className = 'node node-shortestPath';
         this.setState({board:_board});
     }
-    animateDijskstra(visitedNodes) {
+    animateAlgo(visitedNodes) {
         for(let i=0;i<=visitedNodes.length;i++) {
            if(i === visitedNodes.length) {
                setTimeout(()=>this.visualiseShortestPath(),10*i);
@@ -146,8 +151,13 @@ export default class PathFinderVisualiser extends React.Component {
     visualiseDijskstra() {
          const visitedNodes = dijskstra(this.state.board);
          visitedNodes.shift();
-         this.animateDijskstra(visitedNodes);
+         this.animateAlgo(visitedNodes);
     }      
+    visualiseAStar() {
+        const visitedNodes = aStar(this.state.board);
+        visitedNodes.shift();
+        this.animateAlgo(visitedNodes);
+   }   
     animateButton(id) {
        document.getElementById(id).style.backgroundColor = "orange";
     }
@@ -163,6 +173,33 @@ export default class PathFinderVisualiser extends React.Component {
          this.setState({board:emptyBoard});
          this.componentDidMount();
      }
+     clearPath() {
+         const _board = [];
+         for(let r=0;r<ROWS;r++) {
+             const rows = [];
+             for(let c=0;c<COLS;c++) {
+                const node = this.state.board[r][c];
+                const newNode = {
+                   ...node,
+                   isVisited: false,
+                   isShortestPath: false,
+                };
+                rows.push(newNode);
+             }
+             _board.push(rows);
+         }
+         this.setState({board:_board});
+     }
+     visualiseBFS() {
+        const visitedNodes = bfs(this.state.board);
+        visitedNodes.shift();
+        this.animateAlgo(visitedNodes);
+     }  
+     visualiseDFS() {
+        const visitedNodes = dfs(this.state.board,STARTING_ROW,STARTING_COL,null);
+        visitedNodes.shift();
+        this.animateAlgo(visitedNodes);
+     }  
    render() {
        return (
             <div style={{textAlign:"center"}}>
@@ -186,22 +223,32 @@ export default class PathFinderVisualiser extends React.Component {
                </WhiteTextTypography>
             </Button>
             <div class="dropdown-content">
-             <Button style={{backgroundColor:"white",textTransform:"none"}} 
+             <Button 
+                     id="dijskstraAlgoButton"
+                     size="large"
+                     style={{backgroundColor:"white",textTransform:"none"}} 
                      onClick={()=>this.visualiseDijskstra()}
-                     onMouseEnter={()=>this.animateButton("visualiseButton")}
-                     onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Dijskstra's Algorithm </Button>
+                     onMouseEnter={()=>this.animateButton("dijskstraAlgoButton")}
+                     onMouseLeave={()=>this.deAnimateButton("dijskstraAlgoButton")}> Dijskstra's Algorithm </Button>
              <Button 
+                     id="bfsAlgoButton"
                      style={{backgroundColor:"white",textTransform:"none"}}
-                     onMouseEnter={()=>this.animateButton("visualiseButton")}
-                     onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Breath First Search Algorithm </Button>
+                     onClick={()=>this.visualiseBFS()}
+                     onMouseEnter={()=>this.animateButton("bfsAlgoButton")}
+                     onMouseLeave={()=>this.deAnimateButton("bfsAlgoButton")}> Breath First Search Algorithm </Button>
              <Button 
+                    id="dfsAlgoButton"
                     style={{backgroundColor:"white",textTransform:"none"}}
-                    onMouseEnter={()=>this.animateButton("visualiseButton")}
-                    onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> Depth First Search Algorithm </Button>
+                    onClick={()=>this.visualiseDFS()}
+                    onMouseEnter={()=>this.animateButton("dfsAlgoButton")}
+                    onMouseLeave={()=>this.deAnimateButton("dfsAlgoButton")}> Depth First Search Algorithm </Button>
              <Button 
+                    id="A*SearchAlgoButton"
+                    size="large"
                     style={{backgroundColor:"white",textTransform:"none"}}
-                    onMouseEnter={()=>this.animateButton("visualiseButton")}
-                    onMouseLeave={()=>this.deAnimateButton("visualiseButton")}> A* Search Algorithm </Button>
+                    onClick={()=>this.visualiseAStar()}
+                    onMouseEnter={()=>this.animateButton("A*SearchAlgoButton")}
+                    onMouseLeave={()=>this.deAnimateButton("A*SearchAlgoButton")}> A* Search Algorithm </Button>
           </div>
             </div>
             <div>
@@ -214,6 +261,19 @@ export default class PathFinderVisualiser extends React.Component {
                     onClick={()=>this.clearBoard()}> 
                   <WhiteTextTypography variant="h6">
                      Clear Board
+                  </WhiteTextTypography>
+                </Button>
+            </div>
+            <div>
+                <Button 
+                    id="clearPathButton"
+                    size="large"
+                    style={{textTransform:"none"}}
+                    onMouseEnter={()=>this.animateButton("clearPathButton")} 
+                    onMouseLeave={()=>this.deAnimateButton("clearPathButton")}
+                    onClick={()=>this.clearPath()}> 
+                  <WhiteTextTypography variant="h6">
+                     Clear Path
                   </WhiteTextTypography>
                 </Button>
             </div>

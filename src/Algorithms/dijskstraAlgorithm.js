@@ -1,4 +1,3 @@
-//return visited nodes order
 const STARTING_ROW = 12;
 const STARTING_COL = 15;
 const END_ROW = 12;
