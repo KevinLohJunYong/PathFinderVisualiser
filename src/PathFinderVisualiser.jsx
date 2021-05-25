@@ -6,6 +6,7 @@ import dijskstra from './Algorithms/dijskstraAlgorithm.js';
 import bfs from './Algorithms/breathFirstSearch.js';
 import dfs from './Algorithms/depthFirstSearch.js';
 import aStar from './Algorithms/aStarSearch.js';
+import greedyBFS from './Algorithms/GreedyBFS.js';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -157,6 +158,11 @@ export default class PathFinderVisualiser extends React.Component {
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
    }   
+   visualiseGreedyBFS() {
+    const visitedNodes = greedyBFS(this.state.board);
+    visitedNodes.shift();
+    this.animateAlgo(visitedNodes);
+   }
    verifyCleanSlate(board) {
        for(let r=0;r<ROWS;r++) {
            for(let c=0;c>COLS;c++) {
@@ -246,20 +252,27 @@ export default class PathFinderVisualiser extends React.Component {
                      style={{backgroundColor:"white",textTransform:"none"}}
                      onClick={()=>this.visualiseBFS()}
                      onMouseEnter={()=>this.animateButton("bfsAlgoButton")}
-                     onMouseLeave={()=>this.deAnimateButton("bfsAlgoButton")}> Breath First Search Algorithm </Button>
+                     onMouseLeave={()=>this.deAnimateButton("bfsAlgoButton")}> Breath First Search </Button>
              <Button 
                     id="dfsAlgoButton"
                     style={{backgroundColor:"white",textTransform:"none"}}
                     onClick={()=>this.visualiseDFS()}
                     onMouseEnter={()=>this.animateButton("dfsAlgoButton")}
-                    onMouseLeave={()=>this.deAnimateButton("dfsAlgoButton")}> Depth First Search Algorithm </Button>
+                    onMouseLeave={()=>this.deAnimateButton("dfsAlgoButton")}> Depth First Search </Button>
              <Button 
                     id="A*SearchAlgoButton"
                     size="large"
                     style={{backgroundColor:"white",textTransform:"none"}}
                     onClick={()=>this.visualiseAStar()} 
                     onMouseEnter={()=>this.animateButton("A*SearchAlgoButton")}
-                    onMouseLeave={()=>this.deAnimateButton("A*SearchAlgoButton")}> A* Search Algorithm </Button>
+                    onMouseLeave={()=>this.deAnimateButton("A*SearchAlgoButton")}> A* Search </Button>
+            <Button 
+                    id="GreedyBFSButton"
+                    size="large"
+                    style={{backgroundColor:"white",textTransform:"none"}}
+                    onClick={()=>this.visualiseGreedyBFS()} 
+                    onMouseEnter={()=>this.animateButton("GreedyBFSButton")}
+                    onMouseLeave={()=>this.deAnimateButton("GreedyBFSButton")}> Greedy BFS </Button>
           </div>
             </div>
             <div>
