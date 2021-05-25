@@ -1,7 +1,3 @@
-const STARTING_ROW = 12;
-const STARTING_COL = 15;
-const END_ROW = 12;
-const END_COL = 40; 
 const ROWS = 25;
 const COLS = 50;
 
