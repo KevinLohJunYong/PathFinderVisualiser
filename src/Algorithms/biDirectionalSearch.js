@@ -14,7 +14,7 @@ var done = false;
 
 
 export default function biDirectionalSearch(board) {
-     reset(board);
+     init(board);
      for(let i=0;!done&&nodesRight.length>0&&nodesLeft.length>0;i++) {
          var currNodeLeft = nodesLeft.shift();
          var currNodeRight = nodesRight.shift();
@@ -51,10 +51,9 @@ function visitNeighbour(board,r,c,prevR,prevC,isLeft) {
     if(board[r][c].isVisited) return;
     if(isLeft + visitStatus[r][c] === 0) {
          done = true;
-         board[r][c].isVisited = true;
          visitedNodes.push(board[r][c]);
          board[r][c].prevNode = board[prevR][prevC];
-         findShortestPath(board,board[prevR][prevC],board[r][c]);
+         findShortestPath(board);
          return;
     }
     visitStatus[r][c] = isLeft;
@@ -66,31 +65,18 @@ function visitNeighbour(board,r,c,prevR,prevC,isLeft) {
         nodesRight.push(board[r][c]);
     }
 }
-function findShortestPath(board,prevNode,currNode) {
-    var path1 = [];
-    var path2 = [];
-    var prevR = prevNode.row;
-    var prevC = prevNode.col;
-    var currR = currNode.row;
-    var currC = currNode.col;
-    while(prevR !== STARTING_ROW || prevC !== STARTING_COL) {
-         path1.unshift(board[prevR][prevC]);
-         var _prevNode = board[prevR][prevC].prevNode;
-         if(_prevNode === null) break;
-         prevR = _prevNode.row;
-         prevC = _prevNode.col;
+function findShortestPath(board) {
+    var node = board[END_ROW][END_COL];
+    while(node.row !== STARTING_ROW || node.col !== STARTING_COL) {
+        var prevNode = node.prevNode;
+        const _node = {
+            ...node
+        };
+        shortestPath.unshift(_node);
+        node = prevNode;
     }
-    while(currR !== END_ROW || currC !== END_COL) {
-         path2.push(board[currR][currC]);
-         var previousNode = board[currR][currC].prevNode;
-         if(previousNode === null) break;
-         currR = previousNode.row;
-         currC = previousNode.col;
-    }
-    path1.concat(path2);
-    return path1; 
 }
-function reset(board) {
+function init(board) {
     visitedNodes = [];
     shortestPath = [];
     ans = [];

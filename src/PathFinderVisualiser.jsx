@@ -153,7 +153,8 @@ export default class PathFinderVisualiser extends React.Component {
     visualiseBiDirectionalSearch() {
         var allNodes = biDir(this.state.board);
         var visitedNodesBiDir = allNodes[0];
-        var shortestPathBiDir = allNodes[1];
+        alert(allNodes[1].length);
+        var shortestPathBiDir = [];
         for(let i=0;i<visitedNodesBiDir.length;i++) {
             setTimeout(()=>this.markVisited(visitedNodesBiDir[i]),5*i);
         }
@@ -190,7 +191,7 @@ export default class PathFinderVisualiser extends React.Component {
          window.open(gitHubUrl,"_blank");
      }
      clearBoard() {
-        this.componentDidMount();
+        window.location.reload();
      }
      clearPath() {
          const _board = [];
