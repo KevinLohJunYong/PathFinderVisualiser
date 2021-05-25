@@ -6,6 +6,7 @@ import dijskstra from './Algorithms/dijskstraAlgorithm.js';
 import bfs from './Algorithms/breathFirstSearch.js';
 import dfs from './Algorithms/depthFirstSearch.js';
 import aStar from './Algorithms/aStarSearch.js';
+import biDir from './Algorithms/biDirectionalSearch.js';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -107,7 +108,9 @@ export default class PathFinderVisualiser extends React.Component {
        );
     }
     markVisited(node) {
+        if(document.getElementById(`${node.row}-${node.col}`).className === 'node ') {
         document.getElementById(`${node.row}-${node.col}`).className = 'node node-visited';
+        }
     }
     shortestPath(finalNode) {
         const shortestPath = [];
@@ -148,9 +151,15 @@ export default class PathFinderVisualiser extends React.Component {
         }
     }
     visualiseBiDirectionalSearch() {
-        const visitedNodes = dijskstra(this.state.board);
-         visitedNodes.shift();
-         this.animateAlgo(visitedNodes);
+        var allNodes = biDir(this.state.board);
+        var visitedNodesBiDir = allNodes[0];
+        var shortestPathBiDir = allNodes[1];
+        for(let i=0;i<visitedNodesBiDir.length;i++) {
+            setTimeout(()=>this.markVisited(visitedNodesBiDir[i]),5*i);
+        }
+        for(let i=0;i<shortestPathBiDir.length;i++) {
+            setTimeout(()=>this.markShortestPath(shortestPathBiDir[i]),25*i);
+        }
     }
     visualiseDijskstra() {
          const visitedNodes = dijskstra(this.state.board);
