@@ -1,10 +1,6 @@
-const STARTING_ROW = 12;
-const STARTING_COL = 15;
-const END_ROW = 12;
-const END_COL = 40; 
 const ROWS = 25;
 const COLS = 50;
-export default function dijskstraAlgorithm(board) { 
+export default function dijskstraAlgorithm(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) { 
     const visitedNodes = [];
     const nodes = getAllNodes(board);
     board[STARTING_ROW][STARTING_COL].distance = 0;
@@ -13,13 +9,13 @@ export default function dijskstraAlgorithm(board) {
           const closestNode = nodes.shift();
           if(closestNode.isVisited) continue;
           if(closestNode.isWall) continue;
-          if(closestNode.distance === Infinity) return [];
+          if(closestNode.distance === Infinity) return visitedNodes;
           if(closestNode.row === END_ROW && closestNode.col === END_COL) return visitedNodes;
           visitedNodes.push(closestNode);
           closestNode.isVisited = true;
           updateNeighbours(nodes,closestNode,board);
     }
-    return [];
+    return visitedNodes;
 }
 function updateNeighbours(nodes,node,board) {
     if(node.row+1 < ROWS) {

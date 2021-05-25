@@ -1,11 +1,9 @@
-const END_ROW = 12;
-const END_COL = 40; 
 const ROWS = 25;
 const COLS = 56;
 var visitedNodes = [];
 var found = false;
 
-export default function depthFirstSearch(board,row,col,_prevNode) {
+export default function depthFirstSearch(board,row,col,_prevNode,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
     if(_prevNode === null) {
         found = false;
         visitedNodes = [];
@@ -21,9 +19,9 @@ export default function depthFirstSearch(board,row,col,_prevNode) {
     }
      node.isVisited = true;
      visitedNodes.push(node);
-     depthFirstSearch(board,row+1,col,node);
-     depthFirstSearch(board,row,col+1,node);
-     depthFirstSearch(board,row-1,col,node);
-     depthFirstSearch(board,row,col-1,node);
+     depthFirstSearch(board,row-1,col,node,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
+     depthFirstSearch(board,row+1,col,node,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
+     depthFirstSearch(board,row,col+1,node,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
+     depthFirstSearch(board,row,col-1,node,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
      return visitedNodes;
 }

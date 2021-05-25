@@ -1,7 +1,3 @@
-const STARTING_ROW = 12;
-const STARTING_COL = 15;
-const END_ROW = 12;
-const END_COL = 40; 
 const ROWS = 25;
 const COLS = 56;
 var visitedNodes = [];
@@ -9,8 +5,12 @@ const START_G = 0;
 const START_H = 25;
 const START_F = START_G + START_H;
 var gArr = [];
+var _END_ROW = -1;
+var _END_COL = -1;
 
-export default function aStartSearch(board) {
+export default function aStartSearch(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
+     _END_ROW = END_ROW;
+     _END_COL = END_COL;
      gArr = [];
      visitedNodes = [];
      const startNode = {
@@ -32,7 +32,7 @@ export default function aStartSearch(board) {
          board[node.row][node.col].isVisited = true;
          addNeighbours(node,nodes,board);
      }
-     return [];
+     return visitedNodes;
 }
 function sort(nodes) {
     nodes.sort((a,b) => a.f-b.f);
@@ -60,7 +60,7 @@ function addNeighbour(node,nodes,board,r,c) {
     nodes.push(newNode);
 }
 function findH(r,c) {
-    return Math.abs(END_ROW-r) + Math.abs(END_COL-c);
+    return Math.abs(_END_ROW-r) + Math.abs(_END_COL-c);
 }
 function findDeltaG(r,c,_r,_c) {
     return Math.sqrt(Math.pow(r-_r,2)+Math.pow(c-_c,2));

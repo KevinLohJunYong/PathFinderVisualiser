@@ -5,7 +5,7 @@ const END_COL = 40;
 const ROWS = 25;
 const COLS = 50;
 
-export default function breathFirstSearch(board) {
+export default function breathFirstSearch(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
     const visitedNodes = [];
     const queue = [];
     const currNode = board[STARTING_ROW][STARTING_COL];
@@ -18,7 +18,7 @@ export default function breathFirstSearch(board) {
         node.isVisited = true;
         addNeighbours(queue,node,board);
     }
-    return [];
+    return visitedNodes;
 }
 function addNeighbours(queue,node,board) {
     if(node.row+1 < ROWS) {

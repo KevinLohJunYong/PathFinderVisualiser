@@ -7,7 +7,7 @@ const COLS = 56;
 var visitedNodes = [];
 const START_F = 25;
 
-export default function GreedyBFS(board) {
+export default function GreedyBFS(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
      visitedNodes = [];
      const startNode = {
          row: STARTING_ROW,
@@ -25,7 +25,7 @@ export default function GreedyBFS(board) {
          board[node.row][node.col].isVisited = true;
          addNeighbours(node,nodes,board);
      }
-     return [];
+     return visitedNodes;
 }
 function sort(nodes) {
     nodes.sort((a,b) => a.f-b.f);

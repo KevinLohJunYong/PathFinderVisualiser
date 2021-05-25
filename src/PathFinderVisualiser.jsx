@@ -17,29 +17,61 @@ const WhiteTextTypography = withStyles({
       color: "#FFFFFF"
     }
   })(Typography);
-const STARTING_ROW = 12;
-const STARTING_COL = 15;
-const END_ROW = 12;
-const END_COL = 40; 
-const ROWS = 25;
-const COLS = 56;
+var STARTING_ROW = 12;
+var STARTING_COL = 15;
+var END_ROW = 12;
+var END_COL = 40; 
+var ROWS = 25;
+var COLS = 56;
+
 
 export default class PathFinderVisualiser extends React.Component {
     constructor() {
         super();
         this.state = {
             board: [],
-            keyPressed : false
+            keyPressed: false,
+            changeStart: false,
+            changeEnd: false
         }
     }
     handleMouseDown(r,c) {
         this.setState({keyPressed:true});
-        this.makeWall(r,c);
+        if(this.state.board[r][c].isStart) {
+            this.setState({changeStart:true});
+        }
+        else if(this.state.board[r][c].isFinish) {
+            this.setState({changeEnd:true});
+        }
+        else if(this.state.changeStart) {
+          
+        }
+        else if(this.state.changeEnd) {
+            
+        }
+        else this.makeWall(r,c);
     }
-    handleMouseUp() {
+    handleMouseUp(r,c) {
         this.setState({keyPressed:false});
+        if(this.state.changeStart) {
+            var newBoard = this.state.board.slice();
+            newBoard[STARTING_ROW][STARTING_COL].isStart = false;
+            STARTING_ROW = r;
+            STARTING_COL = c;
+            newBoard[STARTING_ROW][STARTING_COL].isStart = true;
+            this.setState({board:newBoard,changeStart:false});
+        }
+        else if(this.state.changeEnd) {
+            var _newBoard = this.state.board.slice();
+            _newBoard[END_ROW][END_COL].isFinish = false;
+            END_ROW = r;
+            END_COL = c;
+            _newBoard[END_ROW][END_COL].isFinish = true;
+            this.setState({board:_newBoard,changeEnd:false});
+        }
     }
     handleMouseEnter(r,c) {
+        if(this.state.changeStart || this.state.changeEnd) return;
         if(this.state.keyPressed) this.makeWall(r,c);
     }
     componentDidMount() {
@@ -98,7 +130,7 @@ export default class PathFinderVisualiser extends React.Component {
                                                 col = {col}
                                                 onMouseDown = {(row,col) => this.handleMouseDown(row,col)}
                                                 onMouseEnter = {(row,col) => this.handleMouseEnter(row,col)}
-                                                onMouseUp = {() => this.handleMouseUp()}>
+                                                onMouseUp = {(row,col) => this.handleMouseUp(row,col)}>
                                              </Node>
                                         );
                                     })}
@@ -149,17 +181,17 @@ export default class PathFinderVisualiser extends React.Component {
         }
     }
     visualiseDijskstra() {
-         const visitedNodes = dijskstra(this.state.board);
+         const visitedNodes = dijskstra(this.state.board,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
          visitedNodes.shift();
          this.animateAlgo(visitedNodes);
     }      
     visualiseAStar() {
-        const visitedNodes = aStar(this.state.board);
+        const visitedNodes = aStar(this.state.board,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
    }   
    visualiseGreedyBFS() {
-    const visitedNodes = greedyBFS(this.state.board);
+    const visitedNodes = greedyBFS(this.state.board,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
     visitedNodes.shift();
     this.animateAlgo(visitedNodes);
    }
@@ -182,7 +214,7 @@ export default class PathFinderVisualiser extends React.Component {
          window.open(gitHubUrl,"_blank");
      }
      clearBoard() {
-        this.componentDidMount();
+        window.location.reload();
      }
      clearPath() {
          const _board = [];
@@ -208,12 +240,12 @@ export default class PathFinderVisualiser extends React.Component {
          this.setState({board:_board});
         }
      visualiseBFS() {
-        const visitedNodes = bfs(this.state.board);
+        const visitedNodes = bfs(this.state.board,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
      }  
      visualiseDFS() {
-        const visitedNodes = dfs(this.state.board,STARTING_ROW,STARTING_COL,null);
+        const visitedNodes = dfs(this.state.board,STARTING_ROW,STARTING_COL,null,STARTING_ROW,STARTING_COL,END_ROW,END_COL);
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
      }  
@@ -323,7 +355,7 @@ export default class PathFinderVisualiser extends React.Component {
                    onMouseLeave={()=>this.deAnimateButton("GitHubButton")}
                    onClick={()=>this.redirectToGitHub()}> 
                   <WhiteTextTypography variant="h6">
-                     GitHub
+                     View Source Code
                   </WhiteTextTypography>
                 </Button>
                 </div>
