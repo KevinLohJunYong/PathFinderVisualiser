@@ -1,13 +1,13 @@
-const STARTING_ROW = 12;
-const STARTING_COL = 15;
-const END_ROW = 12;
-const END_COL = 40; 
 const ROWS = 25;
 const COLS = 56;
 var visitedNodes = [];
 const START_F = 25;
+var end_row = -1;
+var end_col = -1;
 
 export default function GreedyBFS(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
+    end_row = END_ROW;
+    end_col = END_COL;
      visitedNodes = [];
      const startNode = {
          row: STARTING_ROW,
@@ -48,6 +48,6 @@ function addNeighbour(node,nodes,board,r,c) {
     nodes.push(newNode);
 }
 function findH(r,c) {
-    return Math.abs(END_ROW-r) + Math.abs(END_COL-c);
+    return Math.abs(end_row-r) + Math.abs(end_col-c);
 }
 

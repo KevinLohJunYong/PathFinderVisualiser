@@ -342,7 +342,7 @@ export default class PathFinderVisualiser extends React.Component {
                   onMouseLeave={()=>this.deAnimateButton("addWallsButton")}
                   onClick={()=>alert('Click or drag on the board! =))')}> 
                   <WhiteTextTypography variant="h6">
-                     Add Walls
+                     Add Walls/Change Start or End Node
                   </WhiteTextTypography>
                 </Button>
                 </div>
