@@ -340,22 +340,9 @@ export default class PathFinderVisualiser extends React.Component {
                   style={{textTransform:"none"}} 
                   onMouseEnter={()=>this.animateButton("addWallsButton")} 
                   onMouseLeave={()=>this.deAnimateButton("addWallsButton")}
-                  onClick={()=>alert('Click or drag on the board! =))')}> 
+                  onClick={()=>alert('Click or drag on the board! :)')}> 
                   <WhiteTextTypography variant="h6">
                      Add Walls/Change Start or End Node
-                  </WhiteTextTypography>
-                </Button>
-                </div>
-                <div>
-                <Button 
-                   id="GitHubButton"
-                   size="large"
-                   style={{textTransform:"none"}} 
-                   onMouseEnter={()=>this.animateButton("GitHubButton")} 
-                   onMouseLeave={()=>this.deAnimateButton("GitHubButton")}
-                   onClick={()=>this.redirectToGitHub()}> 
-                  <WhiteTextTypography variant="h6">
-                     View Source Code
                   </WhiteTextTypography>
                 </Button>
                 </div>

@@ -38,7 +38,7 @@
     }
 }
 .node-shortestPath {
-    background-color: yellow;
+    background-color: orange;
     animation-name: shortestPathAnimation;
     animation-iteration-count: 1;
     animation-duration: 2s;
