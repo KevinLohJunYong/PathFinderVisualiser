@@ -1,5 +1,5 @@
 const ROWS = 25;
-const COLS = 50;
+const COLS = 56;
 
 export default function breathFirstSearch(board,STARTING_ROW,STARTING_COL,END_ROW,END_COL) {
     const visitedNodes = [];
