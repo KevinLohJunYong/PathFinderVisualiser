@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from './Modal/Modal.jsx';
 import Node from './Node/Node.jsx';
 import { withStyles } from "@material-ui/core/styles";
 import styles from './index.css';
@@ -32,7 +33,8 @@ export default class PathFinderVisualiser extends React.Component {
             board: [],
             keyPressed: false,
             changeStart: false,
-            changeEnd: false
+            changeEnd: false,
+            show: false,
         }
     }
     handleMouseDown(r,c) {
@@ -249,9 +251,17 @@ export default class PathFinderVisualiser extends React.Component {
         visitedNodes.shift();
         this.animateAlgo(visitedNodes);
      }  
+     showModal() {
+         if(this.state.show) {
+            this.setState({show: false});
+         }
+         else {
+            this.setState({show: true});
+         }
+     }
    render() {
        return (
-            <div style={{textAlign:"center"}}>
+            <div >
                 <div> 
                 <div>
       <AppBar position="static" elevation={0} style={{padding:"10px",paddingLeft:"5px"}}>
@@ -333,21 +343,25 @@ export default class PathFinderVisualiser extends React.Component {
                   </WhiteTextTypography>
                 </Button>
             </div>
-                <div>
-                <Button 
-                  id="addWallsButton"
-                  size="large"
-                  style={{textTransform:"none"}} 
-                  onMouseEnter={()=>this.animateButton("addWallsButton")} 
-                  onMouseLeave={()=>this.deAnimateButton("addWallsButton")}
-                  onClick={()=>alert('Click or drag on the board! :)')}> 
-                  <WhiteTextTypography variant="h6">
-                     Add Walls/Change Start or End Node
+            <div>
+            <Button  
+              id="tutorialButton"
+              size="large"
+              style={{textTransform:"none"}} 
+              onClick={e => {
+                this.showModal();
+                }}>
+                    <WhiteTextTypography variant="h6">
+                      {toggleTutorialButtonHtml(this.state.show)}
                   </WhiteTextTypography>
-                </Button>
-                </div>
+          </Button>
+            </div>
         </Toolbar>
       </AppBar>
+      <div>
+        
+                    <Modal show={this.state.show} style={{position:"fixed",marginTop:"20px"}}/>
+                </div>
           </div>
                 </div>
                 <div className={styles.grid}>
@@ -356,4 +370,8 @@ export default class PathFinderVisualiser extends React.Component {
             </div>
        );
    }
+}
+function toggleTutorialButtonHtml(show) {
+    if(!show) return "Tutorial";
+    return "Close Tutorial";
 }
